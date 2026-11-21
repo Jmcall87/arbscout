@@ -24,8 +24,10 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # ubuntu-latest already ships the Android SDK. setup-android@v3 tries to
+      # install the retired "tools" package and fails, so we use the image SDK.
+      - name: Check Android SDK
+        run: test -n "$ANDROID_HOME" && echo "ANDROID_HOME=$ANDROID_HOME"
 
       - name: Install Capacitor
         run: npm install
