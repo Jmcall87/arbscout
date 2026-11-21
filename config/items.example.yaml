@@ -1,0 +1,21 @@
+# Canonical item definitions. Copy to items.yaml and edit.
+#
+# key:        canonical key used everywhere
+# game:       game name
+# name:       display name
+# unit:       human-readable unit, e.g. "1M gold"
+# lot_size:   number of base units in one lot
+# currency:   preferred reporting currency
+# aliases:    venue-specific names that should normalize to this key
+
+items:
+  - key: "demo:gold"
+    game: "Demo Game"
+    name: "Gold"
+    unit: "1M gold"
+    lot_size: 1000000
+    currency: "USD"
+    aliases:
+      - "gold"
+      - "gold coins"
+      - "demo gold"

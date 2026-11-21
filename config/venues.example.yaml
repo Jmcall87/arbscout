@@ -1,0 +1,58 @@
+# Example venue configuration. Copy to venues.yaml and edit.
+#
+# These are PLACEHOLDERS. Do not point them at a real site unless you have
+# checked that site's terms and confirmed that automated access is permitted.
+#
+# kind: api      -> JSON endpoint, dot-path extraction
+# kind: browser  -> public page, CSS selector extraction (read-only)
+#
+# permits_automation must stay false unless the venue's terms allow it AND
+# the adapter implements execution through an official API.
+
+venues:
+  - id: example_api
+    label: "Example API venue"
+    kind: api
+    permits_automation: false
+    base_url: "https://example.com/api"
+    request_timeout: 10
+    headers:
+      Accept: "application/json"
+    endpoints:
+      - path: "/quotes/gold"
+        item_key: "demo:gold"
+        side: "buy"            # price a customer pays to buy from this venue
+        price_jsonpath: "data.buy_per_million"
+        currency_jsonpath: "data.currency"
+        units_per_lot: 1000000
+        fee_pct: 0
+      - path: "/quotes/gold"
+        item_key: "demo:gold"
+        side: "sell"           # instant sell-back offer from this venue
+        price_jsonpath: "data.sell_per_million"
+        currency_jsonpath: "data.currency"
+        units_per_lot: 1000000
+        fee_pct: 0
+
+  - id: example_browser
+    label: "Example public quote page"
+    kind: browser
+    permits_automation: false
+    min_request_interval: 3.0
+    pages:
+      - url: "https://example.com/prices/gold"
+        item_key: "demo:gold"
+        side: "buy"
+        price_selector: "#buy-price"
+        wait_for_selector: "#buy-price"
+        currency: "USD"
+        units_per_lot: 1000000
+        fee_pct: 0
+      - url: "https://example.com/prices/gold"
+        item_key: "demo:gold"
+        side: "sell"
+        price_selector: "#sell-price"
+        wait_for_selector: "#sell-price"
+        currency: "USD"
+        units_per_lot: 1000000
+        fee_pct: 0

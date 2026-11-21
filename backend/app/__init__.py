@@ -1,0 +1,1 @@
+"""ArbScout application package."""

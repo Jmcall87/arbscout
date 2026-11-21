@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#050507" />
+  <meta name="description" content="ArbScout — cross-marketplace intelligence for instant-quote game assets." />
+  <title>ArbScout — See the spread first</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="preload" href="./assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.js" } }
+  </script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="ArbScout home">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7cf7d4" />
+            <stop offset="1" stop-color="#6c8cff" />
+          </linearGradient>
+        </defs>
+        <path d="M20 3.5 34 11v18L20 36.5 6 29V11z" fill="none" stroke="url(#brandGradient)" stroke-width="1.6" />
+        <path d="m12.5 25 5.4-11 4 7 2.6-4.5 3 8.5" fill="none" stroke="url(#brandGradient)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span>ArbScout</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#console">Console</a>
+      <a href="#research">Research</a>
+      <a href="#safety">Safety</a>
+    </nav>
+    <div class="nav-right">
+      <span class="conn" id="connection"><i></i> connecting</span>
+      <a class="nav-cta" href="#console">Open console</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="hero-sticky">
+        <canvas id="scene" aria-label="Animated three-dimensional market object"></canvas>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow">Market intelligence · instant quotes</p>
+          <h1>See the spread<br /><em>before</em> it moves.</h1>
+          <p class="lede">
+            ArbScout watches every venue at once, normalizes the noise, and tells you
+            exactly where an asset is cheap — and what it will really sell for.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#console">Open the console <span aria-hidden="true">→</span></a>
+            <a class="btn ghost" href="#research">How valuation works</a>
+          </div>
+        </div>
+        <div class="scroll-hint" aria-hidden="true"><span></span> scroll to explore</div>
+      </div>
+
+      <div class="hero-steps">
+        <article class="step">
+          <span class="step-num">01</span>
+          <h2>Watch every quote.</h2>
+          <p>API feeds and read-only public pages stream into one normalized view — same unit, same currency, same fee model.</p>
+        </article>
+        <article class="step">
+          <span class="step-num">02</span>
+          <h2>Know the real price.</h2>
+          <p>Robust medians, trend and volatility modeling turn a messy quote history into a defensible fair value and a likely sell-back offer.</p>
+        </article>
+        <article class="step">
+          <span class="step-num">03</span>
+          <h2>Move on your terms.</h2>
+          <p>Research only, approval-gated, or full automation through permitted APIs. Every decision is logged. The kill switch is always yours.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="console" id="console">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Live workspace</p>
+          <h2>The console</h2>
+        </div>
+        <div class="head-actions">
+          <button class="btn subtle" id="scan-btn" type="button">Run scan</button>
+          <span class="last-scan" id="last-scan">not scanned yet</span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <article class="stat glass"><span>Quotes collected</span><strong id="stat-quotes">—</strong></article>
+        <article class="stat glass"><span>Live spreads</span><strong id="stat-opps">—</strong></article>
+        <article class="stat glass"><span>Venues online</span><strong id="stat-venues">—</strong></article>
+        <article class="stat glass"><span>Best confidence</span><strong id="stat-confidence">—</strong></article>
+      </div>
+
+      <div class="console-grid">
+        <article class="panel glass opportunities-panel">
+          <div class="panel-head">
+            <div><h3>Opportunities</h3><p>Buy low on one venue, sell instantly on another.</p></div>
+            <span class="pill" id="mode-pill">research</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Item</th><th>Buy at</th><th>Sell at</th><th>Net</th><th>ROI</th><th>Conf.</th><th></th></tr>
+              </thead>
+              <tbody id="opportunity-list">
+                <tr class="empty"><td colspan="7">No qualifying spreads yet. Add venues, then run a scan.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <aside class="panel glass controls-panel" id="safety">
+          <div class="panel-head"><div><h3>Control</h3><p>Switch modes at any time.</p></div></div>
+          <div class="mode-switch" id="mode-buttons" role="group" aria-label="Operating mode">
+            <button type="button" data-mode="research" class="active">Research</button>
+            <button type="button" data-mode="semi">Semi</button>
+            <button type="button" data-mode="full">Full</button>
+          </div>
+          <p class="mode-note" id="mode-note">Read-only. The agent never logs in or transacts.</p>
+          <button class="kill" id="kill-switch" type="button" aria-pressed="true">
+            <span class="kill-dot"></span><span id="kill-state">Kill switch on</span>
+          </button>
+          <p class="fineprint">Execution is limited to allowlisted venues that declare automation permission and implement an official API. Stealth and CAPTCHA evasion are not part of this tool.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="research" id="research">
+      <div class="section-head">
+        <div><p class="eyebrow">Valuation engine</p><h2>What will it really sell for?</h2></div>
+      </div>
+      <div class="research-grid">
+        <article class="panel glass">
+          <label class="field-label" for="research-select">Canonical item</label>
+          <select id="research-select" aria-label="Select item"></select>
+          <div id="research-body" class="research-body">
+            <p class="muted">Configure items and run a scan to see fair value, likely sell price, volatility and trend.</p>
+          </div>
+        </article>
+        <article class="panel glass explain">
+          <h3>How the estimate is built</h3>
+          <ol>
+            <li><b>Normalize.</b> Convert lot size and currency, subtract the venue's fee.</li>
+            <li><b>Centre.</b> Use a median across venues — outliers don't drag it around.</li>
+            <li><b>Spread.</b> Median absolute deviation gives a robust volatility figure.</li>
+            <li><b>Trend.</b> A short least-squares fit projects the next quote, clamped to the observed range.</li>
+            <li><b>Confidence.</b> Grows with sample depth, shrinks with volatility and staleness.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="audit-section">
+      <div class="section-head"><div><p class="eyebrow">Audit trail</p><h2>Every decision, recorded</h2></div></div>
+      <div class="panel glass audit-panel"><ul id="audit-list" class="audit-list"></ul></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>ArbScout · research software, not financial advice</span>
+    <span>3D asset: Camera 01 (CC0) · HDRI: Blocky Photo Studio (CC0)</span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

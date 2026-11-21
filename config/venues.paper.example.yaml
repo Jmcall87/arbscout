@@ -1,0 +1,31 @@
+# Simulated venues for a complete end-to-end demo, including full-auto mode.
+# No network calls, no accounts, no real money. Safe to enable.
+#
+# Copy to venues.yaml with: sh scripts/quickstart.sh
+
+venues:
+  - id: paper_cheap
+    label: "Paper venue A (simulated)"
+    kind: paper
+    simulated: true
+    permits_automation: true
+    item_key: "demo:gold"
+    buy_price: 96.40
+    sell_price: 98.10
+    currency: USD
+    units_per_lot: 1000000
+    fee_pct: 0
+    jitter_pct: 0.35
+
+  - id: paper_dear
+    label: "Paper venue B (simulated)"
+    kind: paper
+    simulated: true
+    permits_automation: true
+    item_key: "demo:gold"
+    buy_price: 99.20
+    sell_price: 101.80
+    currency: USD
+    units_per_lot: 1000000
+    fee_pct: 0
+    jitter_pct: 0.35
