@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 
+from app import db
 from app.config import Settings
 from app.execution.policies import ExecutionPolicy
 from app.models import Item, Quote
@@ -90,6 +91,7 @@ class TestPaperPipeline(unittest.TestCase):
                 min_roi_pct=Decimal("0"),
                 min_confidence=0.0,
             )
+            db.init_db(settings.db_path)
             venues = load_venues(config_dir)
             items = load_items(config_dir)
             summary = asyncio.run(scan_once(settings, venues, items, None, None))
