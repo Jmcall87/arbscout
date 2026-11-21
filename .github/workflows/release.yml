@@ -35,7 +35,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      - name: Check Android SDK
+        run: test -n "$ANDROID_HOME" && echo "ANDROID_HOME=$ANDROID_HOME"
       - run: npm install
       - run: npx cap add android
       - run: npx cap sync android
